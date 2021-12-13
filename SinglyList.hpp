@@ -1,6 +1,7 @@
 #include<memory>
 #include<iostream>
-#include<functional>
+#include<algorithm>
+#include<iterator>
 template <typename ListType>
 class SinglyList
 {
@@ -13,6 +14,8 @@ class SinglyList
          std::shared_ptr<NODE> NEXT = nullptr;
      };
      std::shared_ptr<NODE>HEAD = nullptr;
+    private:
+     size_t ListSize = 0;
     public:
      SinglyList() = default;
      SinglyList(const SinglyList& list);
@@ -24,5 +27,5 @@ class SinglyList
      void push_front(ListType Data);
      void insert(size_t pos,ListType Data);
      void remove(size_t pos);
-     void traverse() const;
+     void traverse(const char* delm) const;
 };

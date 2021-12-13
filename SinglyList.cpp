@@ -65,6 +65,7 @@ SinglyList<ListType>& SinglyList<ListType>::operator ~()
 template <typename ListType>
 void SinglyList<ListType>::push_back(ListType Data)
 {
+    ListSize++;
     if(HEAD == nullptr)
     {
         HEAD = std::make_shared<NODE>(Data);
@@ -82,6 +83,7 @@ void SinglyList<ListType>::push_back(ListType Data)
 template <typename ListType>
 void SinglyList<ListType>::push_front(ListType Data)
 {
+    ListSize++;
     if(HEAD == nullptr)
     {
         HEAD = std::make_shared<NODE>(Data);
@@ -94,6 +96,7 @@ void SinglyList<ListType>::push_front(ListType Data)
 template <typename ListType>
 void SinglyList<ListType>::insert(size_t pos,ListType Data)
 {
+    ListSize++;
     if(pos != 0)
     {
         auto Tmp = HEAD;
@@ -113,29 +116,32 @@ void SinglyList<ListType>::insert(size_t pos,ListType Data)
 template <typename ListType>
 void SinglyList<ListType>::remove(size_t pos)
 {
-    if(pos != 0)
+    if(ListSize != 0)
     {
-        size_t i = 1;
-        auto Tmp = HEAD;
-        while( i < pos)
+        ListSize--;
+        if(pos != 0)
         {
-            Tmp = Tmp->NEXT;
-            i++;
+            size_t i = 1;
+            auto Tmp = HEAD;
+            while( i < pos)
+            {
+                Tmp = Tmp->NEXT;
+                i++;
+            }
+            Tmp->NEXT = Tmp->NEXT->NEXT;
         }
-        Tmp->NEXT = Tmp->NEXT->NEXT;
-    }
-    else
-    {
-        HEAD = HEAD->NEXT;
+        else
+        {
+            HEAD = HEAD->NEXT;
+        }
     }
 }
 template <typename ListType>
-void SinglyList<ListType>::traverse() const
+void SinglyList<ListType>::traverse(const char* delm) const
 {
-    auto Tmp = HEAD;
-    while(Tmp != nullptr)
-    {
-        std::cout<<Tmp->DATA << std::endl;
-        Tmp = Tmp->NEXT;
-    }
+   std::generate_n(std::ostream_iterator<ListType>(std::cout,delm),ListSize,[head = HEAD.get()]()mutable{
+       auto data = head->DATA;
+       head = head->NEXT.get();
+       return data;
+   });
 }
