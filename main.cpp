@@ -1,10 +1,11 @@
-#include"SinglyList.hpp"
+#include"Stack.h"
+#include<iostream>
 int main()
 {
-    SinglyList<int> ls;
-    ls.push_back(10);
-    ls.push_front(12);
-    ls.push_back(13);
-    ls.traverse("\n");
+    STACK stk;
+    create_stack(&stk);
+    push_stack(&stk,10);
+    push_stack(&stk , 30);
+    std::cout<<peek_stack(&stk);
     return 0;
 }

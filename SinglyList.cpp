@@ -24,6 +24,7 @@ SinglyList<ListType>& SinglyList<ListType>::operator = (const SinglyList& List)
 template <typename ListType>
 SinglyList<ListType>& SinglyList<ListType>::operator += (const SinglyList& List)
 {
+    std::cout<<"CALLED concatenate";
     auto TmpFromTarget = List.HEAD;
     if(HEAD == nullptr)
     {

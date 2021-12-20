@@ -28,4 +28,8 @@ class SinglyList
      void insert(size_t pos,ListType Data);
      void remove(size_t pos);
      void traverse(const char* delm) const;
+     size_t size() const
+     {
+         return ListSize;
+     }
 };

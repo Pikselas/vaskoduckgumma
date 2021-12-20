@@ -1,3 +1,5 @@
+//compile with cl .\Matrix.cpp -std:c++latest /EHsc
+
 #include<vector>
 #include<iterator>
 #include<iostream>
@@ -17,7 +19,8 @@ void Traverse(const v2Dtype& v)
         std::cout<<std::endl;
     }
 }
-v2Dtype Addition(const v2Dtype& v1,const v2Dtype& v2)
+template<typename OpType>
+v2Dtype MatrixOperation(const v2Dtype& v1,const v2Dtype& v2)
 {
     v2Dtype v;
     if(!v1.empty() && !v2.empty())
@@ -26,12 +29,30 @@ v2Dtype Addition(const v2Dtype& v1,const v2Dtype& v2)
         {
             std::ranges::transform(v1,v2,std::back_inserter(v),[](const auto& I1,const auto& I2){
                  vType vCol;
-                 std::ranges::transform(I1,I2,std::back_inserter(vCol),std::plus<vType::value_type>());
+                 std::ranges::transform(I1,I2,std::back_inserter(vCol),OpType());
                  return vCol;
             });
         }
     }
     return v;
+}
+void Transpose(v2Dtype& v)
+{
+    auto Row = v.size();
+    auto Col = v.front().size();
+    auto i = Row;
+    auto j = Col;
+    for(i = 0 ; i < Row ; i++)
+    {
+        for( j = 0;j < Col ;j++ )
+        {
+            auto Tmp = v[i][j];
+            v[i][j] = v[j][i];
+            v[j][i] = Tmp;
+        }
+        Traverse(v);
+        std::cout<<std::endl;
+    }
 }
 v2Dtype Multiply(const v2Dtype& v1,const v2Dtype& v2)
 {
@@ -64,8 +85,50 @@ v2Dtype Multiply(const v2Dtype& v1,const v2Dtype& v2)
 }
 int main()
 {
-    v2Dtype v1 = {{1,2},
-                  {2,3}},
-            v2 = v1;
-    Traverse(Multiply(v1,v2));
+    int r , c;
+    std::cout<<"\nENTER ELEMENT ROW AND COLUMN FOR 1ST MATRIX:";
+    std::cin >> r >> c;
+    v2Dtype v1(r , vType(c ,0));
+    std::cout<<"\nENTER ELEMENTS";
+    for(auto& elm : v1)
+    {
+        for(auto& e : elm)
+        {
+            std::cin>>e;
+        }
+    }
+    std::cout<<"\nENTER ELEMENT ROW AND COLUMN FOR 1ST MATRIX:";
+    std::cin >> r >> c;
+    v2Dtype v2(r , vType(c ,0));
+    std::cout<<"\nENTER ELEMENTS";
+    for(auto& elm : v2)
+    {
+        for(auto& e : elm)
+        {
+            std::cin>>e;
+        }
+    }
+    while(true)
+    {
+    std::cout<<"ENTER CHOICE\n1.ADD\n2.SUBTRACT\n3.MULTIPLY\n4.TRAVERSE";
+    std::cin>>r;
+    switch (r)
+    {
+    case 1:
+      Traverse(MatrixOperation<std::plus<int>>(v1,v2));
+     break;
+    case 2:
+      Traverse(MatrixOperation<std::minus<int>>(v1,v2));
+    break;
+    case 3:
+      Traverse(Multiply(v1,v2));
+     break;
+    case 4:
+      Traverse(v1);
+      std::cout<<std::endl;
+      Traverse(v2);
+     break;
+    }
+    }
+return 0;
 }
