@@ -1,3 +1,4 @@
+#pragma once
 #include<stdlib.h>
 typedef int QueueType;
 struct QUEUE
